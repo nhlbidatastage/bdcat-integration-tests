@@ -27,8 +27,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-venv
-          python3 -m venv /venv
-          source /venv/bin/activate
+          python3 -m venv ./venv
+          source ./venv/bin/activate
           pip install -r requirements.txt
       - name: Lint
         run: make lint
@@ -37,7 +37,7 @@ jobs:
       - name: Run basic submission test
         run: timeout -s SIGINT 115m /venv/bin/python test/test_basic_submission.py
       - name: Post to Slack
-        run: /venv/bin/python scripts/post_to_slack.py
+        run: ./venv/bin/python scripts/post_to_slack.py
       
 
   staging__version_check:
@@ -56,17 +56,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-venv
-          python3 -m venv /venv
-          source /venv/bin/activate
+          python3 -m venv ./venv
+          source ./venv/bin/activate
           pip install -r requirements.txt
       - name: Lint
         run: make lint
       - name: Decode credentials
         run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d > gcp-creds.json
       - name: Run version check test
-        run: /venv/bin/python test/test_version_check.py
+        run: ./venv/bin/python test/test_version_check.py
       - name: Post to Slack
-        run: /venv/bin/python scripts/post_to_slack.py
+        run: ./venv/bin/python scripts/post_to_slack.py
       
 
   prod__basic_submission:
@@ -83,8 +83,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-venv
-          python3 -m venv /venv
-          source /venv/bin/activate
+          python3 -m venv ./venv
+          source ./venv/bin/activate
           pip install -r requirements.txt
       - name: Lint
         run: make lint
