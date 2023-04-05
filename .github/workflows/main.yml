@@ -30,10 +30,10 @@ jobs:
           python3 -m venv ./venv
           source ./venv/bin/activate
           pip install -r requirements.txt
-      - name: Source Environment
-        run: source environment
       - name: Lint
-        run: make lint
+        run: |
+          source environment
+          make lint
       - name: Decode credentials
         run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d > gcp-creds.json
       - name: Run basic submission test
@@ -61,10 +61,10 @@ jobs:
           python3 -m venv ./venv
           source ./venv/bin/activate
           pip install -r requirements.txt
-      - name: Source Environment
-        run: source environment
       - name: Lint
-        run: make lint
+        run: |
+          source environment
+          make lint
       - name: Decode credentials
         run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d > gcp-creds.json
       - name: Run version check test
@@ -90,10 +90,10 @@ jobs:
           python3 -m venv ./venv
           source ./venv/bin/activate
           pip install -r requirements.txt
-      - name: Source Environment
-        run: source environment
       - name: Lint
-        run: make lint
+        run: |
+          source environment
+          make lint
       - name: Decode credentials
         run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d > gcp-creds.json
       - name: Run basic submission test
