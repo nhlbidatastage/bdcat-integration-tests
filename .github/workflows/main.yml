@@ -35,7 +35,7 @@ jobs:
           source environment
           make lint
       - name: Decode credentials
-        run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d > gcp-creds.json
+        run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} > gcp-creds.json
       - name: Run basic submission test
         run: timeout -s SIGINT 115m ./venv/bin/python test/test_basic_submission.py
       - name: Post to Slack
@@ -66,7 +66,7 @@ jobs:
           source environment
           make lint
       - name: Decode credentials
-        run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d > gcp-creds.json
+        run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} > gcp-creds.json
       - name: Run version check test
         run: ./venv/bin/python test/test_version_check.py
       - name: Post to Slack
@@ -95,6 +95,6 @@ jobs:
           source environment
           make lint
       - name: Decode credentials
-        run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} | base64 -d > gcp-creds.json
+        run: echo -n ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }} > gcp-creds.json
       - name: Run basic submission test
         run: timeout
