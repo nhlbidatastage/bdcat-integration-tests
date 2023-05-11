@@ -20,6 +20,7 @@ jobs:
       GOOGLE_PROJECT_ID: drs-billing-project
       BDCAT_STAGE: staging
       TERRA_DEPLOYMENT_ENV: alpha
+      TEST_MULE_CREDS: ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
