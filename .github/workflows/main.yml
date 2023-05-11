@@ -21,6 +21,7 @@ jobs:
       BDCAT_STAGE: staging
       TERRA_DEPLOYMENT_ENV: alpha
       TEST_MULE_CREDS: ${{ secrets.TEST_MULE_CREDS }}
+      GEN3_API_KEY: ${{ secrets.GEN3_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -82,6 +83,7 @@ jobs:
       GOOGLE_PROJECT_ID: drs-billing-project
       BDCAT_STAGE: prod
       TEST_MULE_CREDS: ${{ secrets.TEST_MULE_CREDS }}
+      GEN3_API_KEY: ${{ secrets.GEN3_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
