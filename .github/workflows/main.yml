@@ -20,7 +20,7 @@ jobs:
       GOOGLE_PROJECT_ID: drs-billing-project
       BDCAT_STAGE: staging
       TERRA_DEPLOYMENT_ENV: alpha
-      TEST_MULE_CREDS: ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}
+      TEST_MULE_CREDS: ${{ secrets.TEST_MULE_CREDS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -81,7 +81,7 @@ jobs:
       WORKSPACE_NAME: terra-notebook-utils-tests
       GOOGLE_PROJECT_ID: drs-billing-project
       BDCAT_STAGE: prod
-      TEST_MULE_CREDS: ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}
+      TEST_MULE_CREDS: ${{ secrets.TEST_MULE_CREDS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
