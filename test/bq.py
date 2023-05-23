@@ -45,7 +45,7 @@ class Client:
         ]
         self.create_table(table_id, schema)
 
-    def log_test_results(self, test_name, status, timestamp, create=True):
+    def log_test_results(self, test_name, status, timestamp, create=False):
         table_id = f'interoptestingworkinggroup.bdc.integration_tests_{test_name}'
         if status != 'skip':
             if status == 'success':
