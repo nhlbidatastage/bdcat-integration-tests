@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 class Client:
 
-    def __init__(self, project='platform-dev-178517'):
+    def __init__(self, project='interoptestingworkinggroup'):
         credentials = Credentials.from_service_account_file('gcp-creds.json')
         self.client = bigquery.Client(project=project, credentials=credentials)
 
@@ -45,8 +45,8 @@ class Client:
         ]
         self.create_table(table_id, schema)
 
-    def log_test_results(self, test_name, status, timestamp, create=False):
-        table_id = f'platform-dev-178517.bdc.integration_tests_{test_name}'
+    def log_test_results(self, test_name, status, timestamp, create=True):
+        table_id = f'interoptestingworkinggroup.bdc.integration_tests_{test_name}'
         if status != 'skip':
             if status == 'success':
                 field = 'u'

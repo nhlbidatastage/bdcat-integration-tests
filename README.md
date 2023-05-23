@@ -45,8 +45,7 @@ Simply submit a PR and flag for review.
 
 # Feedback
 We welcome feedback and suggestions from any Biodata Catalyst team on useful tests that would help to 
-strengthen the stability of interaction between components.  Please email either lblauvel at ucsc.edu or 
-bhannafi at ucsc.edu.
+strengthen the stability of interaction between components.  Please email lblauvel at ucsc.edu.
 
 # Current State of Testing
 
@@ -55,7 +54,7 @@ bhannafi at ucsc.edu.
 | Terra         | :heavy_multiplication_x: | :white_check_mark:       | :white_check_mark:       | :heavy_multiplication_x: | Future                   |      |
 | Gen3          | TBD                      | :heavy_multiplication_x: | TBD?                     | TBD?                     |                          |      |
 | Dockstore     |                          |                          | :heavy_multiplication_x: |                          |                          |      |
-| Seven Bridges | :heavy_multiplication_x: | TBD?                     | TBD?                     | :heavy_multiplication_x: | Future                   |      |
+| Seven Bridges | :heavy_multiplication_x: | :white_check_mark:       | TBD?                     | :heavy_multiplication_x: | Future                   |      |
 | PIC-SURE      |                          | TBD?                     |                          |                          | :heavy_multiplication_x: |      |
 | HeLx          | TBD?                     | TBD?                     |                          | TBD?                     |                          | :heavy_multiplication_x: |
 
