@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 class Client:
 
-    def __init__(self, project='platform-dev-178517'):
+    def __init__(self, project='interoptestingworkinggroup'):
         credentials = Credentials.from_service_account_file('gcp-creds.json')
         self.client = bigquery.Client(project=project, credentials=credentials)
 
