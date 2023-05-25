@@ -14,6 +14,7 @@ jobs:
   staging__basic_submission:
     if: github.ref != 'refs/heads/prod'
     runs-on: ubuntu-latest
+    environment: staging
     env:
       GOOGLE_PROJECT_NAME: firecloud-cgl
       WORKSPACE_NAME: terra-notebook-utils-tests
