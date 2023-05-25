@@ -47,6 +47,7 @@ jobs:
 
   staging__version_check:
     if: github.ref != 'refs/heads/prod'
+    environment: staging
     runs-on: ubuntu-latest
     env:
       GOOGLE_PROJECT_NAME: firecloud-cgl
@@ -78,6 +79,7 @@ jobs:
 
   prod__basic_submission:
     runs-on: ubuntu-latest
+    environment: prod
     env:
       GOOGLE_PROJECT_NAME: firecloud-cgl
       WORKSPACE_NAME: terra-notebook-utils-tests
