@@ -339,7 +339,7 @@ if __name__ == "__main__":
         test_name = test._testMethodName
         try:
             # To create tables, skip all tests and set create to True:
-            client.log_test_results(test_name, status, timestamp, create=False)
+            client.log_test_results(test_name, status, timestamp, create=True)
         except Exception as e:
             logger.exception('Failed to log test %r', test, exc_info=e)
     sys.exit(not results.wasSuccessful())
