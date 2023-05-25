@@ -11,7 +11,6 @@ from test.utils import retry
 log = logging.getLogger(__name__)
 
 
-
 class Client:
 
     def __init__(self, project='unc-renci-bdc-itwg'):
