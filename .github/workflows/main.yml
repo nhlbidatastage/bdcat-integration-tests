@@ -10,6 +10,7 @@ on:
   schedule:
     - cron: "*/30 * * * *"
 
+
 jobs:
   staging__basic_submission:
     if: github.ref != 'refs/heads/prod'
