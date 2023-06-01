@@ -15,6 +15,7 @@ jobs:
   staging__basic_submission:
     if: github.ref != 'refs/heads/prod'
     runs-on: ubuntu-latest
+    environment: staging
     env:
       GOOGLE_PROJECT_NAME: firecloud-cgl
       WORKSPACE_NAME: terra-notebook-utils-tests
@@ -41,12 +42,13 @@ jobs:
         run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 -d > gcp-creds.json
       - name: Run basic submission test
         run: timeout -s SIGINT 115m ./venv/bin/python test/test_basic_submission.py
-      - name: Post to Slack
-        run: ./venv/bin/python scripts/post_to_slack.py
+#       - name: Post to Slack
+#         run: ./venv/bin/python scripts/post_to_slack.py
       
 
   staging__version_check:
     if: github.ref != 'refs/heads/prod'
+    environment: staging
     runs-on: ubuntu-latest
     env:
       GOOGLE_PROJECT_NAME: firecloud-cgl
@@ -72,12 +74,13 @@ jobs:
         run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 -d > gcp-creds.json
       - name: Run version check test
         run: ./venv/bin/python test/test_version_check.py
-      - name: Post to Slack
-        run: ./venv/bin/python scripts/post_to_slack.py
+#       - name: Post to Slack
+#         run: ./venv/bin/python scripts/post_to_slack.py
       
 
   prod__basic_submission:
     runs-on: ubuntu-latest
+    environment: prod
     env:
       GOOGLE_PROJECT_NAME: firecloud-cgl
       WORKSPACE_NAME: terra-notebook-utils-tests
@@ -102,4 +105,6 @@ jobs:
       - name: Decode credentials
         run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 -d > gcp-creds.json
       - name: Run basic submission test
-        run: timeout
+        run: timeout -s SIGINT 115m ./venv/bin/python test/test_basic_submission.py
+#       - name: Post to Slack
+#         run: ./venv/bin/python scripts/post_to_slack.py
