@@ -69,7 +69,7 @@ class Utilities:
         resp.raise_for_status()
         return {}
 
-    def run_workflow(rawls_domain, billing_project, workspace, stage):
+    def run_workflow(rawls_domain, billing_project, stage):
         workspace = 'DRS-Test-Workspace'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/submissions'
 
@@ -112,7 +112,7 @@ class Utilities:
                 break
         return wf_seen_in_terra
 
-    def check_workflow_status(rawls_domain, billing_project, workspace, submission_id):
+    def check_workflow_status(rawls_domain, billing_project, submission_id):
         workspace = 'DRS-Test-Workspace'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/submissions/{submission_id}'
 
