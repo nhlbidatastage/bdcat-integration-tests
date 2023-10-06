@@ -77,7 +77,7 @@ class TestTerra(unittest.TestCase):
                 self.assertEqual(e.response.status_code, 409)
 
         # check status that the workflow is seen in terra
-        wf_seen_in_terra = Utilities.check_workflow_seen_in_terra()
+        wf_seen_in_terra = Utilities.check_workflow_seen_in_terra(RAWLS_DOMAIN, BILLING_PROJECT)
         with self.subTest('Dockstore Check Workflow Seen'):
             self.assertTrue(wf_seen_in_terra)
 
