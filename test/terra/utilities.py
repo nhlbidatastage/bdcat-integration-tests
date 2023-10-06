@@ -44,7 +44,7 @@ class Utilities:
         return resp.json()
 
     # @retry(error_codes={500, 502, 503, 504}, errors={HTTPError, ConnectionError})
-    def check_workflow_presence_in_terra_workspace(rawls_domain, billing_project, workspace):
+    def check_workflow_presence_in_terra_workspace(rawls_domain, billing_project):
         workspace = 'BDC_Dockstore_Import_Test'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/methodconfigs?allRepos=true'
 
@@ -100,9 +100,9 @@ class Utilities:
         resp.raise_for_status()
         return resp.json()
 
-    def check_workflow_seen_in_terra():
+    def check_workflow_seen_in_terra(rawls_domain, billing_project):
         wf_seen_in_terra = False
-        response = Utilities.check_workflow_presence_in_terra_workspace()
+        response = Utilities.check_workflow_presence_in_terra_workspace(rawls_domain, billing_project)
         for wf_response in response:
             method_info = wf_response['methodRepoMethod']
             if method_info['methodPath'] == 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl' \
