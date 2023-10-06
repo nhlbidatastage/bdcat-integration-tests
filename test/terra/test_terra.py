@@ -5,6 +5,8 @@ import time
 import datetime
 import os
 import json
+import warnings
+import base64
 
 # from test.bq import log_duration, Client
 from .utilities import Utilities
@@ -32,6 +34,28 @@ logger = logging.getLogger(__name__)
 class TestTerra(unittest.TestCase):
     ''' These are tests that map interactions from other platforms into Terra'''
 
+    def setUp(self):
+        # Stolen shamelessly: https://github.com/DataBiosphere/terra-notebook-utils/pull/59
+        # Suppress the annoying google gcloud _CLOUD_SDK_CREDENTIALS_WARNING warnings
+        warnings.filterwarnings("ignore", "Your application has authenticated using end user credentials")
+        # Suppress unclosed socket warnings
+        warnings.simplefilter("ignore", ResourceWarning)
+
+    @classmethod
+    def setUpClass(cls):
+        gcloud_cred_dir = os.path.expanduser('~/.config/gcloud')
+        if not os.path.exists(gcloud_cred_dir):
+            os.makedirs(gcloud_cred_dir, exist_ok=True)
+        with open(os.path.expanduser('~/.config/gcloud/application_default_credentials.json'), 'w') as f:
+            f.write(base64.decodebytes(os.environ['TEST_MULE_CREDS'].encode('utf-8')).decode('utf-8'))
+        print(f'Terra [{STAGE}] Health Status:\n\n{json.dumps(Utilities.check_terra_health(ORC_DOMAIN), indent=4)}')
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            Utilities.delete_workflow_presence_in_terra_workspace(RAWLS_DOMAIN, BILLING_PROJECT)
+        except:  # noqa
+            pass
     # @retry(errors={requests.exceptions.HTTPError}, error_codes={409})
     def test_dockstore_import_in_terra(self):
         # import the workflow into terra
@@ -57,7 +81,7 @@ class TestTerra(unittest.TestCase):
             self.assertTrue(wf_seen_in_terra)
 
         # delete the workflow
-        Utilities.delete_workflow_presence_in_terra_workspace()
+        Utilities.delete_workflow_presence_in_terra_workspace(RAWLS_DOMAIN, BILLING_PROJECT)
 
         # check status that the workflow is no longer seen in terra
         wf_seen_in_terra = Utilities.check_workflow_seen_in_terra()

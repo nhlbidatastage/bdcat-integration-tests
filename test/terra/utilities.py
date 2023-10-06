@@ -6,6 +6,14 @@ from terra_notebook_utils import gs
 class Utilities:
     '''Usually Atomic actions that should be covered in platform specific Unit tests '''
 
+    def check_terra_health(orc_domain):
+        # note: the same endpoint seems to be at: https://api.alpha.firecloud.org/status
+        endpoint = f'{orc_domain}/status'
+
+        resp = requests.get(endpoint)
+        resp.raise_for_status()
+        return resp.json()
+
     def import_dockstore_wf_into_terra(rawls_domain, billing_project):
         workspace = 'BDC_Dockstore_Import_Test'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/methodconfigs'
@@ -48,7 +56,7 @@ class Utilities:
         resp.raise_for_status()
         return resp.json()
 
-    def delete_workflow_presence_in_terra_workspace(rawls_domain, billing_project, workspace):
+    def delete_workflow_presence_in_terra_workspace(rawls_domain, billing_project):
         workspace = 'BDC_Dockstore_Import_Test'
         workflow = 'UM_aligner_wdl'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/methodconfigs/{billing_project}/{workflow}'
