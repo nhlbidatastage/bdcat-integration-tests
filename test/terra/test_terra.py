@@ -35,7 +35,7 @@ class TestTerra(unittest.TestCase):
     # @retry(errors={requests.exceptions.HTTPError}, error_codes={409})
     def test_dockstore_import_in_terra(self):
         # import the workflow into terra
-        response = Utilities.import_dockstore_wf_into_terra()
+        response = Utilities.import_dockstore_wf_into_terra(RAWLS_DOMAIN, BILLING_PROJECT)
         method_info = response['methodConfiguration']['methodRepoMethod']
         with self.subTest('Dockstore Import Response: sourceRepo'):
             self.assertEqual(method_info['sourceRepo'], 'dockstore')
@@ -113,9 +113,10 @@ class TestTerra(unittest.TestCase):
     def test_pfb_handoff_from_gen3_to_terra(self):
         time_stamp = datetime.datetime.now().strftime("%Y_%m_%d_%H%M%S")
         workspace_name = f'integration_test_pfb_gen3_to_terra_{time_stamp}_delete_me'
+        job_id = 0
 
         with self.subTest('Create a terra workspace.'):
-            response = Utilities.create_terra_workspace(workspace=workspace_name)
+            response = Utilities.create_terra_workspace(rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT, workspace=workspace_name)
             self.assertTrue('workspaceId' in response)
             self.assertTrue(response['createdBy'] == 'biodata.integration.test.mule@gmail.com')
 
@@ -124,14 +125,15 @@ class TestTerra(unittest.TestCase):
                                             pfb_file='https://cdistest-public-test-bucket.s3.amazonaws.com/export_2020-06-02T17_33_36.avro',
                                             orc_domain=ORC_DOMAIN,
                                             billing_project=BILLING_PROJECT)
+            job_id = response['jobId']
             self.assertTrue('jobId' in response)
 
         with self.subTest('Check on the import static pfb job status.'):
-            response = Utilities.pfb_job_status_in_terra(workspace=workspace_name, job_id=response['jobId'], orc_domain=ORC_DOMAIN, billing_project=BILLING_PROJECT)
+            response = Utilities.pfb_job_status_in_terra(workspace=workspace_name, job_id=job_id, orc_domain=ORC_DOMAIN, billing_project=BILLING_PROJECT)
             # this should take < 60 seconds
             while response['status'] in ['Translating', 'ReadyForUpsert', 'Upserting', 'Pending']:
                 time.sleep(2)
-                response = Utilities.pfb_job_status_in_terra(workspace=workspace_name, job_id=response['jobId'], orc_domain=ORC_DOMAIN, billing_project=BILLING_PROJECT)
+                response = Utilities.pfb_job_status_in_terra(workspace=workspace_name, job_id=job_id, orc_domain=ORC_DOMAIN, billing_project=BILLING_PROJECT)
             self.assertTrue(response['status'] == 'Done',
                             msg=f'Expecting status: "Done" but got "{response["status"]}".\n'
                                 f'Full response: {json.dumps(response, indent=4)}')

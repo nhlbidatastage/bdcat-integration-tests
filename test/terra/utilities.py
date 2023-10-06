@@ -6,7 +6,7 @@ from terra_notebook_utils import gs
 class Utilities:
     '''Usually Atomic actions that should be covered in platform specific Unit tests '''
 
-    def import_dockstore_wf_into_terra(rawls_domain, billing_project, workspace):
+    def import_dockstore_wf_into_terra(rawls_domain, billing_project):
         workspace = 'BDC_Dockstore_Import_Test'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/methodconfigs'
 
