@@ -10,8 +10,6 @@ import json
 from terra_notebook_utils import drs
 from utilities import Utilities
 
-
-
 ''' Defining some environment specific domain constants'''
 STAGE = os.environ.get('BDCAT_STAGE', 'staging')
 if STAGE == 'prod':
@@ -28,6 +26,7 @@ else:
     raise ValueError('Please set BDCAT_STAGE to "prod" or "staging".')
 
 logger = logging.getLogger(__name__)
+
 
 class TestTerra(unittest.TestCase):
     ''' These are tests that map interactions from other platforms into Terra'''
@@ -64,8 +63,6 @@ class TestTerra(unittest.TestCase):
         with self.subTest('Dockstore Check Workflow Not Seen'):
             self.assertFalse(wf_seen_in_terra)
 
-
-
     @unittest.skip('This test needs to be updated.')
     def test_drs_workflow_in_terra(self):
         """This test runs md5sum in a fixed workspace using a drs url from gen3."""
@@ -82,7 +79,8 @@ class TestTerra(unittest.TestCase):
         # also configurable manually via MD5SUM_TEST_TIMEOUT if held in a pending state
         start = time.time()
         deadline = start + int(os.environ.get('MD5SUM_TEST_TIMEOUT', 60 * 60))
-        table = f'platform-dev-178517.bdc.terra_md5_latency_min_{STAGE}'
+        ''' UNCOMMENT THIS TOO'''
+        # table = f'platform-dev-178517.bdc.terra_md5_latency_min_{STAGE}'
         while True:
             response = Utilities.check_workflow_status(submission_id=submission_id)
             status = response['status']
@@ -110,7 +108,7 @@ class TestTerra(unittest.TestCase):
         with self.subTest('Dockstore Workflow Run Completed Successfully'):
             if response['workflows'][0]['status'] != "Succeeded":
                 raise RuntimeError(f'The md5sum workflow did not succeed:\n{json.dumps(response, indent=4)}')
-    
+
     def test_pfb_handoff_from_gen3_to_terra(self):
         time_stamp = datetime.datetime.now().strftime("%Y_%m_%d_%H%M%S")
         workspace_name = f'integration_test_pfb_gen3_to_terra_{time_stamp}_delete_me'
@@ -122,29 +120,29 @@ class TestTerra(unittest.TestCase):
 
         with self.subTest('Import static pfb into the terra workspace.'):
             response = Utilities.import_pfb(workspace=workspace_name,
-                                  pfb_file='https://cdistest-public-test-bucket.s3.amazonaws.com/export_2020-06-02T17_33_36.avro',
-                                  orc_domain = ORC_DOMAIN,
-                                  billing_project = BILLING_PROJECT)
+                                            pfb_file='https://cdistest-public-test-bucket.s3.amazonaws.com/export_2020-06-02T17_33_36.avro',
+                                            orc_domain=ORC_DOMAIN,
+                                            billing_project=BILLING_PROJECT)
             self.assertTrue('jobId' in response)
 
         with self.subTest('Check on the import static pfb job status.'):
-            response = Utilities.pfb_job_status_in_terra(workspace=workspace_name, job_id=response['jobId'],orc_domain=ORC_DOMAIN,billing_project=BILLING_PROJECT)
+            response = Utilities.pfb_job_status_in_terra(workspace=workspace_name, job_id=response['jobId'], orc_domain=ORC_DOMAIN, billing_project=BILLING_PROJECT)
             # this should take < 60 seconds
             while response['status'] in ['Translating', 'ReadyForUpsert', 'Upserting', 'Pending']:
                 time.sleep(2)
-                response = Utilities.pfb_job_status_in_terra(workspace=workspace_name, job_id=response['jobId'],orc_domain=ORC_DOMAIN,billing_project=BILLING_PROJECT)
+                response = Utilities.pfb_job_status_in_terra(workspace=workspace_name, job_id=response['jobId'], orc_domain=ORC_DOMAIN, billing_project=BILLING_PROJECT)
             self.assertTrue(response['status'] == 'Done',
                             msg=f'Expecting status: "Done" but got "{response["status"]}".\n'
                                 f'Full response: {json.dumps(response, indent=4)}')
 
         with self.subTest('Delete the terra workspace.'):
-            response = Utilities.delete_terra_workspace(workspace=workspace_name,rawls_domain=RAWLS_DOMAIN,billing_project=BILLING_PROJECT)
+            response = Utilities.delete_terra_workspace(workspace=workspace_name, rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT)
             if not response.ok:
                 raise RuntimeError(
                     f'Could not delete the workspace "{workspace_name}": [{response.status_code}] {response}')
             if response.status_code != 202:
                 logger.critical(f'Response {response.status_code} has changed: {response}')
-            response = Utilities.delete_terra_workspace(workspace=workspace_name,rawls_domain=RAWLS_DOMAIN,billing_project=BILLING_PROJECT)
+            response = Utilities.delete_terra_workspace(workspace=workspace_name, rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT)
             self.assertTrue(response.status_code == 404)
 
     @unittest.skip('There seems to be an environment issue with this test in staging.')

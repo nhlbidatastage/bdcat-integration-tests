@@ -2,8 +2,9 @@ import json
 import requests
 from terra_notebook_utils import gs
 
-'''Usually Atomic actions that should be covered in platform specific Unit tests '''
+
 class Utilities:
+    '''Usually Atomic actions that should be covered in platform specific Unit tests '''
 
     def import_dockstore_wf_into_terra(rawls_domain, billing_project, workspace):
         workspace = 'BDC_Dockstore_Import_Test'
@@ -11,8 +12,8 @@ class Utilities:
 
         token = gs.get_access_token()
         headers = {'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': f'Bearer {token}'}
+                   'Accept': 'application/json',
+                   'Authorization': f'Bearer {token}'}
 
         data = {
             "namespace": billing_project,
@@ -41,7 +42,7 @@ class Utilities:
 
         token = gs.get_access_token()
         headers = {'Accept': 'application/json',
-                'Authorization': f'Bearer {token}'}
+                   'Authorization': f'Bearer {token}'}
 
         resp = requests.get(endpoint, headers=headers)
         resp.raise_for_status()
@@ -54,7 +55,7 @@ class Utilities:
 
         token = gs.get_access_token()
         headers = {'Accept': 'application/json',
-                'Authorization': f'Bearer {token}'}
+                   'Authorization': f'Bearer {token}'}
 
         resp = requests.delete(endpoint, headers=headers)
         resp.raise_for_status()
@@ -66,8 +67,8 @@ class Utilities:
 
         token = gs.get_access_token()
         headers = {'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': f'Bearer {token}'}
+                   'Accept': 'application/json',
+                   'Authorization': f'Bearer {token}'}
 
         # staging input: https://gen3.biodatacatalyst.nhlbi.nih.gov/files/dg.712C/fa640b0e-9779-452f-99a6-16d833d15bd0
         # md5sum: e87ecd9c771524dcc646c8baf6f8d3e2
@@ -103,25 +104,25 @@ class Utilities:
                 break
         return wf_seen_in_terra
 
-    def check_workflow_status(rawls_domain, billing_project, workspace,submission_id):
+    def check_workflow_status(rawls_domain, billing_project, workspace, submission_id):
         workspace = 'DRS-Test-Workspace'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/submissions/{submission_id}'
 
         token = gs.get_access_token()
         headers = {'Accept': 'application/json',
-                'Authorization': f'Bearer {token}'}
+                   'Authorization': f'Bearer {token}'}
 
         resp = requests.get(endpoint, headers=headers)
         resp.raise_for_status()
         return resp.json()
-    
-    def create_terra_workspace(rawls_domain, billing_project,workspace):
+
+    def create_terra_workspace(rawls_domain, billing_project, workspace):
         endpoint = f'{rawls_domain}/api/workspaces'
 
         token = gs.get_access_token()
         headers = {'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': f'Bearer {token}'}
+                   'Accept': 'application/json',
+                   'Authorization': f'Bearer {token}'}
 
         data = dict(namespace=billing_project,
                     name=workspace,
@@ -142,8 +143,8 @@ class Utilities:
 
         token = gs.get_access_token()
         headers = {'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': f'Bearer {token}'}
+                   'Accept': 'application/json',
+                   'Authorization': f'Bearer {token}'}
         data = dict(url=pfb_file)
 
         resp = requests.post(endpoint, headers=headers, data=json.dumps(data))
@@ -153,13 +154,13 @@ class Utilities:
         else:
             print(resp.content)
             resp.raise_for_status()
-    
+
     def pfb_job_status_in_terra(workspace, job_id, orc_domain, billing_project):
         endpoint = f'{orc_domain}/api/workspaces/{billing_project}/{workspace}/importPFB/{job_id}'
         token = gs.get_access_token()
 
         headers = {'Accept': 'application/json',
-                'Authorization': f'Bearer {token}'}
+                   'Authorization': f'Bearer {token}'}
 
         resp = requests.get(endpoint, headers=headers)
 
@@ -169,12 +170,12 @@ class Utilities:
             print(resp.content)
             resp.raise_for_status()
 
-    def delete_terra_workspace(workspace,rawls_domain,billing_project):
+    def delete_terra_workspace(workspace, rawls_domain, billing_project):
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}'
 
         token = gs.get_access_token()
         headers = {'Accept': 'text/plain',
-                'Authorization': f'Bearer {token}'}
+                   'Authorization': f'Bearer {token}'}
 
         resp = requests.delete(endpoint, headers=headers)
 
