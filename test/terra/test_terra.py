@@ -7,8 +7,9 @@ import os
 import json
 
 # from test.bq import log_duration, Client
+from .utilities import Utilities
 from terra_notebook_utils import drs
-from utilities import Utilities
+
 
 ''' Defining some environment specific domain constants'''
 STAGE = os.environ.get('BDCAT_STAGE', 'staging')
