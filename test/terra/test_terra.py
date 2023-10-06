@@ -85,7 +85,7 @@ class TestTerra(unittest.TestCase):
         Utilities.delete_workflow_presence_in_terra_workspace(RAWLS_DOMAIN, BILLING_PROJECT)
 
         # check status that the workflow is no longer seen in terra
-        wf_seen_in_terra = Utilities.check_workflow_seen_in_terra()
+        wf_seen_in_terra = Utilities.check_workflow_seen_in_terra(RAWLS_DOMAIN, BILLING_PROJECT)
         with self.subTest('Dockstore Check Workflow Not Seen'):
             self.assertFalse(wf_seen_in_terra)
 
