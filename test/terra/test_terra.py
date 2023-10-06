@@ -71,7 +71,7 @@ class TestTerra(unittest.TestCase):
 
         # check that a second attempt gives a 409 error
         try:
-            Utilities.import_dockstore_wf_into_terra()
+            Utilities.import_dockstore_wf_into_terra(RAWLS_DOMAIN, BILLING_PROJECT)
         except requests.exceptions.HTTPError as e:
             with self.subTest('Dockstore Import Response: 409 conflict'):
                 self.assertEqual(e.response.status_code, 409)
@@ -92,7 +92,7 @@ class TestTerra(unittest.TestCase):
     @unittest.skip('This test needs to be updated.')
     def test_drs_workflow_in_terra(self):
         """This test runs md5sum in a fixed workspace using a drs url from gen3."""
-        response = Utilities.run_workflow()
+        response = Utilities.run_workflow(RAWLS_DOMAIN, BILLING_PROJECT, STAGE)
         status = response['status']
         with self.subTest('Dockstore Workflow Run Submitted'):
             self.assertEqual(status, 'Submitted')
@@ -108,7 +108,7 @@ class TestTerra(unittest.TestCase):
         ''' UNCOMMENT THIS TOO'''
         # table = f'platform-dev-178517.bdc.terra_md5_latency_min_{STAGE}'
         while True:
-            response = Utilities.check_workflow_status(submission_id=submission_id)
+            response = Utilities.check_workflow_status(rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT, submission_id=submission_id)
             status = response['status']
             if response['workflows'][0]['status'] == "Failed":
                 '''WHEN THIS GOES LIVE UNCOMMENT'''
