@@ -56,6 +56,7 @@ class TestTerra(unittest.TestCase):
             Utilities.delete_workflow_presence_in_terra_workspace(RAWLS_DOMAIN, BILLING_PROJECT)
         except:  # noqa
             pass
+            
     # @retry(errors={requests.exceptions.HTTPError}, error_codes={409})
     def test_dockstore_import_in_terra(self):
         # import the workflow into terra
