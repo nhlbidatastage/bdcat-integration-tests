@@ -3,12 +3,13 @@ import os
 import sys
 import logging
 import unittest
+from . import sb_broker
 
 pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))  # noqa
 sys.path.insert(0, pkg_root)  # noqa
 
 from .testmode import staging_only, production_only, uses_sb_broker
-from .sb_broker import sb_broker
+
 
 logger = logging.getLogger(__name__)
 
