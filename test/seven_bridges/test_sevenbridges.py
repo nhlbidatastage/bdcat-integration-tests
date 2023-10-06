@@ -26,5 +26,3 @@ class TestBDCIntegration(unittest.TestCase):
     @uses_sb_broker
     def test_bdc_production(self):
         sb_broker.execute(sb_broker.SBEnv.production, 'sbgtests.plans.bdc')
-
-
