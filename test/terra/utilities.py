@@ -1,10 +1,20 @@
 import json
 import requests
 from terra_notebook_utils import gs
+from unittest import TestResult
 
 
 class Utilities:
     '''Usually Atomic actions that should be covered in platform specific Unit tests '''
+
+    def report_out(results: TestResult, webhook: str):
+        result_text = f'''
+        Tests Run: {results.testsRun}\n
+        Tests Failed: {len(results.falures)}\n
+        Test Errors: {len(results.errors)}\n\n
+        List of tests failed: {", ".join([x[0] for x in results.failures])}\n
+        List of tests errored: {", ".join([x[0] for x in results.errors])}'''
+        requests.post(webhook, result_text)
 
     def check_terra_health(orc_domain):
         # note: the same endpoint seems to be at: https://api.alpha.firecloud.org/status
