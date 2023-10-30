@@ -189,6 +189,5 @@ class TestTerra(unittest.TestCase):
 
 if __name__ == '__main__':
     test_runner = TestTerra()
-    test_result = unittest.TestResult()
-    test_runner.run(result=test_result)
-    Utilities.report_out(test_result, WEBHOOK)
+    test_runner.run()
+    Utilities.report_out(test_runner.result, WEBHOOK)
