@@ -9,7 +9,7 @@ import warnings
 import base64
 
 # from test.bq import log_duration, Client
-from terra.utilities import Utilities
+from .utilities import Utilities
 from terra_notebook_utils import drs
 
 
