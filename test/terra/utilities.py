@@ -10,7 +10,7 @@ class Utilities:
     def report_out(results: TestResult, webhook: str):
         result_text = f'''
         Tests Run: {results.testsRun}\n
-        Tests Failed: {len(results.falures)}\n
+        Tests Failed: {len(results.failures)}\n
         Test Errors: {len(results.errors)}\n\n
         List of tests failed: {", ".join([x[0] for x in results.failures])}\n
         List of tests errored: {", ".join([x[0] for x in results.errors])}'''
