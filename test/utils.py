@@ -161,9 +161,6 @@ def import_dockstore_wf_into_terra():
     return resp.json()
 
 
-
-
-
 @retry(error_codes={500, 502, 503, 504}, errors={HTTPError, ConnectionError})
 def delete_workflow_presence_in_terra_workspace(rawls_domain, billing_project, ):
     workspace = 'BDC_Dockstore_Import_Test'
