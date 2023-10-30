@@ -14,7 +14,7 @@ class Utilities:
         Test Errors: {len(results.errors)}\n\n
         List of tests failed: {", ".join([x[0] for x in results.failures])}\n
         List of tests errored: {", ".join([x[0] for x in results.errors])}'''
-        requests.post(webhook, result_text)
+        requests.post(webhook, data={'text': result_text})
 
     def check_terra_health(orc_domain):
         # note: the same endpoint seems to be at: https://api.alpha.firecloud.org/status
