@@ -23,7 +23,9 @@ jobs:
       BDCAT_STAGE: staging
       TERRA_DEPLOYMENT_ENV: alpha
       TEST_MULE_CREDS: ${{ secrets.TEST_MULE_CREDS }}
+      TERRA_WEBHOOK: ${{ secrets.TERRA_SLACK_WEBHOOK }}
       GEN3_API_KEY: ${{ secrets.GEN3_API_KEY }}
+      BDCAT_SB_BROKER_TOKEN: ${{ secrets.BDCAT_SB_BROKER_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -40,8 +42,12 @@ jobs:
           make lint
       - name: Decode credentials
         run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 -d > gcp-creds.json
+      # - name: Run basic submission test
+      #   run: timeout -s SIGINT 115m ./venv/bin/python -m unittest
       - name: Run basic submission test
-        run: timeout -s SIGINT 115m ./venv/bin/python test/test_basic_submission.py
+        run: |
+          cd test
+          timeout -s SIGINT 115m ../venv/bin/python -m terra.test_terra
 #       - name: Post to Slack
 #         run: ./venv/bin/python scripts/post_to_slack.py
       
@@ -79,6 +85,7 @@ jobs:
       
 
   prod__basic_submission:
+    if: github.ref == 'refs/heads/prod'
     runs-on: ubuntu-latest
     environment: prod
     env:

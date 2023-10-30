@@ -162,24 +162,10 @@ def import_dockstore_wf_into_terra():
 
 
 @retry(error_codes={500, 502, 503, 504}, errors={HTTPError, ConnectionError})
-def check_workflow_presence_in_terra_workspace():
-    workspace = 'BDC_Dockstore_Import_Test'
-    endpoint = f'{RAWLS_DOMAIN}/api/workspaces/{BILLING_PROJECT}/{workspace}/methodconfigs?allRepos=true'
-
-    token = gs.get_access_token()
-    headers = {'Accept': 'application/json',
-               'Authorization': f'Bearer {token}'}
-
-    resp = requests.get(endpoint, headers=headers)
-    resp.raise_for_status()
-    return resp.json()
-
-
-@retry(error_codes={500, 502, 503, 504}, errors={HTTPError, ConnectionError})
-def delete_workflow_presence_in_terra_workspace():
+def delete_workflow_presence_in_terra_workspace(rawls_domain, billing_project, ):
     workspace = 'BDC_Dockstore_Import_Test'
     workflow = 'UM_aligner_wdl'
-    endpoint = f'{RAWLS_DOMAIN}/api/workspaces/{BILLING_PROJECT}/{workspace}/methodconfigs/{BILLING_PROJECT}/{workflow}'
+    endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/methodconfigs/{BILLING_PROJECT}/{workflow}'
 
     token = gs.get_access_token()
     headers = {'Accept': 'application/json',
