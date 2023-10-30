@@ -15,6 +15,7 @@ from terra_notebook_utils import drs
 
 ''' Defining some environment specific domain constants'''
 STAGE = os.environ.get('BDCAT_STAGE', 'staging')
+WEBHOOK = os.environ.get('TERRA_WEBHOOK')
 if STAGE == 'prod':
     GEN3_DOMAIN = 'https://gen3.biodatacatalyst.nhlbi.nih.gov'
     RAWLS_DOMAIN = 'https://rawls.dsde-prod.broadinstitute.org'
@@ -190,4 +191,4 @@ if __name__ == '__main__':
     test_runner = TestTerra()
     test_result = unittest.TestResult()
     test_runner.run(result=test_result)
-    print(test_result)
+    Utilities.report_out(test_result, WEBHOOK)
