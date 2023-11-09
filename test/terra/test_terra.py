@@ -174,7 +174,7 @@ class TestTerra(unittest.TestCase):
             response = Utilities.delete_terra_workspace(workspace=workspace_name, rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT)
             self.assertTrue(response.status_code == 404)
 
-    @unittest.skip('There seems to be an environment issue with this test in staging.')
+    # @unittest.skip('There seems to be an environment issue with this test in staging.')
     def test_public_data_access(self):
         # this DRS URI only exists on staging/alpha and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'alpha'
         drs.head('drs://dg.712C/fa640b0e-9779-452f-99a6-16d833d15bd0',
@@ -189,4 +189,5 @@ class TestTerra(unittest.TestCase):
 
 if __name__ == '__main__':
     results = unittest.main(exit=False)
-    Utilities.report_out(results.result, WEBHOOK)
+    if len(results.result.failures) > 0 or len(results.result.errors) > 0:
+        Utilities.report_out(results.result, WEBHOOK)
