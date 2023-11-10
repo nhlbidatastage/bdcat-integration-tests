@@ -46,7 +46,7 @@ jobs:
       #   run: timeout -s SIGINT 115m ./venv/bin/python -m unittest
       - name: Run basic submission test
         run: |
-          timeout -s SIGINT 115m ../venv/bin/python -m test.terra.test_terra
+          timeout -s SIGINT 115m ./venv/bin/python -m test.terra.test_terra
 #       - name: Post to Slack
 #         run: ./venv/bin/python scripts/post_to_slack.py
       
