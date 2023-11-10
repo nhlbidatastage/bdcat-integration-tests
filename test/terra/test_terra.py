@@ -7,10 +7,13 @@ import os
 import json
 import warnings
 import base64
+import sys
 
 # from test.bq import log_duration, Client
 from .utilities import Utilities
+from ..bq import log_duration, Client
 from terra_notebook_utils import drs
+
 
 
 ''' Defining some environment specific domain constants'''
@@ -177,17 +180,30 @@ class TestTerra(unittest.TestCase):
     # @unittest.skip('There seems to be an environment issue with this test in staging.')
     def test_public_data_access(self):
         # this DRS URI only exists on staging/alpha and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'alpha'
-        drs.head('drs://dg.712C/fa640b0e-9779-452f-99a6-16d833d15bd0',
+        drs.head('drs://dg.712C:fa640b0e-9779-452f-99a6-16d833d15bd0',
                  workspace_name='DRS-Test-Workspace', workspace_namespace=BILLING_PROJECT)
 
     @unittest.skip('This test needs to be updated.')
     def test_controlled_data_access(self):
         # this DRS URI only exists on staging/alpha and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'alpha'
-        drs.head('drs://dg.712C/04fbb96d-68c9-4922-801e-9b1350be3b94',
+        drs.head('drs://dg.712C:04fbb96d-68c9-4922-801e-9b1350be3b94',
                  workspace_name='DRS-Test-Workspace', workspace_namespace=BILLING_PROJECT)
 
 
 if __name__ == '__main__':
-    results = unittest.main(exit=False)
+    results = unittest.main(verbosity=2, exit=False)
     if len(results.result.failures) > 0 or len(results.result.errors) > 0:
         Utilities.report_out(results.result, WEBHOOK)
+    timestamp = datetime.datetime.now()
+    client = Client()
+    for test, status in results.tests_run.items():
+        # Unfortunately this is the only way to get the test method name from the TestCase
+        test_name = test._testMethodName
+        try:
+            # To create tables, skip all tests and set create to True:
+            if STAGE == 'staging':
+                test_name = f'staging_{test_name}'
+            client.log_test_results(test_name, status, timestamp, create=True)
+        except Exception as e:
+            logger.exception('Failed to log test %r', test, exc_info=e)
+    sys.exit(not results.wasSuccessful())
