@@ -15,7 +15,6 @@ from ..bq import log_duration, Client
 from terra_notebook_utils import drs
 
 
-
 ''' Defining some environment specific domain constants'''
 STAGE = os.environ.get('BDCAT_STAGE', 'staging')
 WEBHOOK = os.environ.get('TERRA_WEBHOOK')
