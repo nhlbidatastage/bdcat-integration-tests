@@ -50,7 +50,7 @@ class TestTerra(unittest.TestCase):
         if not os.path.exists(gcloud_cred_dir):
             os.makedirs(gcloud_cred_dir, exist_ok=True)
         with open(os.path.expanduser('~/.config/gcloud/application_default_credentials.json'), 'w') as f:
-            f.write(base64.decodebytes(os.environ['TEST_MULE_CREDS'].encode('utf-8')).decode('utf-8'))
+            f.write(os.environ['TEST_MULE_CREDS'].encode('utf-8'))
         print(f'Terra [{STAGE}] Health Status:\n\n{json.dumps(Utilities.check_terra_health(ORC_DOMAIN), indent=4)}')
 
     @classmethod
