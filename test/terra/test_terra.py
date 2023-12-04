@@ -146,7 +146,7 @@ class TestTerra(unittest.TestCase):
         with self.subTest('Create a terra workspace.'):
             response = Utilities.create_terra_workspace(rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT, workspace=workspace_name)
             self.assertTrue('workspaceId' in response)
-            self.assertTrue(response['createdBy'] == 'biodata.integration.test.mule@gmail.com')
+            self.assertTrue(response['createdBy'] == 'biodata.itwg.test.mule@gmail.com')
 
         with self.subTest('Import static pfb into the terra workspace.'):
             response = Utilities.import_pfb(workspace=workspace_name,
