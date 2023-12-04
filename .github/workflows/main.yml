@@ -41,7 +41,7 @@ jobs:
           source environment
           make lint
       - name: Decode credentials
-        run: echo "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" > gcp-creds.json
+        run: echo '${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}' > gcp-creds.json
       # - name: Run basic submission test
       #   run: timeout -s SIGINT 115m ./venv/bin/python -m unittest
       - name: Run basic submission test
