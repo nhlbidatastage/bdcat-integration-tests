@@ -25,7 +25,7 @@ if STAGE == 'prod':
     BILLING_PROJECT = 'broad-integration-testing'
 elif STAGE == 'staging':
     GEN3_DOMAIN = 'https://staging.gen3.biodatacatalyst.nhlbi.nih.gov'
-    RAWLS_DOMAIN = 'https://rawls.dsde-alpha.broadinstitute.org'
+    RAWLS_DOMAIN = 'https://bvdp-saturn-staging.appspot.com/'
     ORC_DOMAIN = 'https://firecloud-orchestration.dsde-alpha.broadinstitute.org'
     BILLING_PROJECT = 'drs-billing-project'
 else:
