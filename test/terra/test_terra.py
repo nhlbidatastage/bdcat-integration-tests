@@ -26,7 +26,7 @@ if STAGE == 'prod':
 elif STAGE == 'staging':
     GEN3_DOMAIN = 'https://staging.gen3.biodatacatalyst.nhlbi.nih.gov'
     RAWLS_DOMAIN = 'https://bvdp-saturn-staging.appspot.com/'
-    ORC_DOMAIN = 'https://firecloud-orchestration.dsde-alpha.broadinstitute.org'
+    ORC_DOMAIN = 'https://firecloud-orchestration.dsde-staging.broadinstitute.org'
     BILLING_PROJECT = 'drs-billing-project'
 else:
     raise ValueError('Please set BDCAT_STAGE to "prod" or "staging".')
