@@ -47,11 +47,11 @@ class TestTerra(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''COMMENT FOR LOCAL TESTING'''
-        # gcloud_cred_dir = os.path.expanduser('~/.config/gcloud')
-        # if not os.path.exists(gcloud_cred_dir):
-        #     os.makedirs(gcloud_cred_dir, exist_ok=True)
-        # with open(os.path.expanduser('~/.config/gcloud/application_default_credentials.json'), 'w') as f:
-        #     f.write(os.environ['TEST_MULE_CREDS'])
+        gcloud_cred_dir = os.path.expanduser('~/.config/gcloud')
+        if not os.path.exists(gcloud_cred_dir):
+            os.makedirs(gcloud_cred_dir, exist_ok=True)
+        with open(os.path.expanduser('~/.config/gcloud/application_default_credentials.json'), 'w') as f:
+            f.write(os.environ['TEST_MULE_CREDS'])
         '''END COMMENT FOR LOCAL TESTING'''
         print(f'Terra [{STAGE}] Health Status:\n\n{json.dumps(Utilities.check_terra_health(ORC_DOMAIN), indent=4)}')
 
