@@ -26,7 +26,6 @@ jobs:
       TERRA_WEBHOOK: ${{ secrets.TERRA_SLACK_WEBHOOK }}
       GEN3_API_KEY: ${{ secrets.GEN3_API_KEY }}
       BDCAT_SB_BROKER_TOKEN: ${{ secrets.BDCAT_SB_BROKER_TOKEN }}
-      TERRA_NOTEBOOK_GOOGLE_ACCESS_TOKEN: ${{ secrets.TERRA_NOTEBOOK_GOOGLE_ACCESS_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -43,13 +42,9 @@ jobs:
           make lint
       - name: Decode credentials
         run: echo '${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}' > gcp-creds.json
-      # - name: Run basic submission test
-      #   run: timeout -s SIGINT 115m ./venv/bin/python -m unittest
       - name: Run basic submission test
         run: |
           timeout -s SIGINT 115m ./venv/bin/python -m test.terra.test_terra
-#       - name: Post to Slack
-#         run: ./venv/bin/python scripts/post_to_slack.py
       
 
   staging__version_check:

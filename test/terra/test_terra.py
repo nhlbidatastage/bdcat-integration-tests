@@ -189,8 +189,8 @@ class TestTerra(unittest.TestCase):
 
 if __name__ == '__main__':
     results = unittest.main(verbosity=2, exit=False)
-    if len(results.result.failures) > 0 or len(results.result.errors) > 0:
-        Utilities.report_out(results.result, WEBHOOK)
+    # if len(results.result.failures) > 0 or len(results.result.errors) > 0:
+    #     Utilities.report_out(results.result, WEBHOOK)
     timestamp = datetime.datetime.now()
     client = Client()
     for test, status in results.tests_run.items():
