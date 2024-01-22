@@ -109,7 +109,7 @@ class TestTerra(unittest.TestCase):
         start = time.time()
         deadline = start + int(os.environ.get('MD5SUM_TEST_TIMEOUT', 60 * 60))
 
-        table = f'platform-dev-178517.bdc.terra_md5_latency_min_{STAGE}'
+        table = f'unc-renci-bdc-itwg.bdc.terra_md5_latency_min_{STAGE}'
         while True:
             response = Utilities.check_workflow_status(rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT, submission_id=submission_id)
             status = response['status']
