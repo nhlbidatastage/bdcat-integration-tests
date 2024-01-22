@@ -21,7 +21,7 @@ jobs:
       WORKSPACE_NAME: terra-notebook-utils-tests
       GOOGLE_PROJECT_ID: drs-billing-project
       BDCAT_STAGE: staging
-      TERRA_DEPLOYMENT_ENV: alpha
+      TERRA_DEPLOYMENT_ENV: staging
       TEST_MULE_CREDS: ${{ secrets.TEST_MULE_CREDS }}
       TERRA_WEBHOOK: ${{ secrets.TERRA_SLACK_WEBHOOK }}
       GEN3_API_KEY: ${{ secrets.GEN3_API_KEY }}
