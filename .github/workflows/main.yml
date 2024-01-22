@@ -26,6 +26,7 @@ jobs:
       TERRA_WEBHOOK: ${{ secrets.TERRA_SLACK_WEBHOOK }}
       GEN3_API_KEY: ${{ secrets.GEN3_API_KEY }}
       BDCAT_SB_BROKER_TOKEN: ${{ secrets.BDCAT_SB_BROKER_TOKEN }}
+      ENCODED_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
