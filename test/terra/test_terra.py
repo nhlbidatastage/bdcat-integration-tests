@@ -114,7 +114,7 @@ class TestTerra(unittest.TestCase):
             response = Utilities.check_workflow_status(rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT, submission_id=submission_id)
             status = response['status']
             if response['workflows'][0]['status'] == "Failed":
-                log_duration(table, time.time() - start,True)
+                log_duration(table, time.time() - start, True)
                 raise RuntimeError(f'The md5sum workflow did not succeed:\n{json.dumps(response, indent=4)}')
             elif status == 'Done':
                 break

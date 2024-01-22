@@ -63,7 +63,7 @@ class Client:
             self.add_row(table_id, row)
 
 
-def log_duration(table, duration, create_table = False):
+def log_duration(table, duration, create_table=False):
     if create_table:
         Client().create_test_table(table)
     try:
