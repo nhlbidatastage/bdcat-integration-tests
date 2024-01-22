@@ -25,7 +25,7 @@ class Utilities:
         return resp.json()
 
     def import_dockstore_wf_into_terra(rawls_domain, billing_project):
-        workspace = 'BDC_Dockstore_Import_Test'
+        workspace = 'BDC_Dockstore_Import_Tester'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/methodconfigs'
 
         token = gs.get_access_token()
@@ -50,12 +50,12 @@ class Utilities:
         }
 
         resp = requests.post(endpoint, headers=headers, data=json.dumps(data))
+        
         resp.raise_for_status()
         return resp.json()
 
-    # @retry(error_codes={500, 502, 503, 504}, errors={HTTPError, ConnectionError})
     def check_workflow_presence_in_terra_workspace(rawls_domain, billing_project):
-        workspace = 'BDC_Dockstore_Import_Test'
+        workspace = 'BDC_Dockstore_Import_Tester'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/methodconfigs?allRepos=true'
 
         token = gs.get_access_token()
@@ -67,7 +67,7 @@ class Utilities:
         return resp.json()
 
     def delete_workflow_presence_in_terra_workspace(rawls_domain, billing_project):
-        workspace = 'BDC_Dockstore_Import_Test'
+        workspace = 'BDC_Dockstore_Import_Tester'
         workflow = 'UM_aligner_wdl'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/methodconfigs/{billing_project}/{workflow}'
 
@@ -93,18 +93,11 @@ class Utilities:
         data = {
             "methodConfigurationNamespace": "drs_tests",
             "methodConfigurationName": "md5sum",
-            "entityType": "data_access_test_drs_uris_set",
-            "entityName": "md5sum_2020-05-19T17-52-42",
             "expression": "this.data_access_test_drs_uriss",
             "useCallCache": False,
             "deleteIntermediateOutputFiles": True,
             "workflowFailureMode": "NoNewCalls"
         }
-        if stage == 'prod':
-            # prod input: https://gen3.biodatacatalyst.nhlbi.nih.gov/files/dg.4503/d52a7cc6-67a5-4bd6-9041-a5dad3f3650a
-            # md5sum: e87ecd9c771524dcc646c8baf6f8d3e2
-            del data["entityType"]
-            del data["entityName"]
 
         resp = requests.post(endpoint, headers=headers, data=json.dumps(data))
         resp.raise_for_status()
@@ -153,7 +146,6 @@ class Utilities:
         if resp.ok:
             return resp.json()
         else:
-            print(resp.content)
             resp.raise_for_status()
 
     def import_pfb(workspace, pfb_file, orc_domain, billing_project):
@@ -170,7 +162,6 @@ class Utilities:
         if resp.ok:
             return resp.json()
         else:
-            print(resp.content)
             resp.raise_for_status()
 
     def pfb_job_status_in_terra(workspace, job_id, orc_domain, billing_project):
@@ -185,7 +176,6 @@ class Utilities:
         if resp.ok:
             return resp.json()
         else:
-            print(resp.content)
             resp.raise_for_status()
 
     def delete_terra_workspace(workspace, rawls_domain, billing_project):

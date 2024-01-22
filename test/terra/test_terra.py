@@ -25,7 +25,7 @@ if STAGE == 'prod':
     BILLING_PROJECT = 'broad-integration-testing'
 elif STAGE == 'staging':
     GEN3_DOMAIN = 'https://staging.gen3.biodatacatalyst.nhlbi.nih.gov'
-    RAWLS_DOMAIN = 'https://bvdp-saturn-staging.appspot.com/'
+    RAWLS_DOMAIN = 'https://rawls.dsde-staging.broadinstitute.org'
     ORC_DOMAIN = 'https://firecloud-orchestration.dsde-staging.broadinstitute.org'
     BILLING_PROJECT = 'drs-billing-project'
 else:
@@ -46,11 +46,13 @@ class TestTerra(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        '''COMMENT FOR LOCAL TESTING'''
         gcloud_cred_dir = os.path.expanduser('~/.config/gcloud')
         if not os.path.exists(gcloud_cred_dir):
             os.makedirs(gcloud_cred_dir, exist_ok=True)
         with open(os.path.expanduser('~/.config/gcloud/application_default_credentials.json'), 'w') as f:
             f.write(os.environ['TEST_MULE_CREDS'])
+        '''END COMMENT FOR LOCAL TESTING'''
         print(f'Terra [{STAGE}] Health Status:\n\n{json.dumps(Utilities.check_terra_health(ORC_DOMAIN), indent=4)}')
 
     @classmethod
@@ -60,7 +62,6 @@ class TestTerra(unittest.TestCase):
         except:  # noqa
             pass
 
-    # @retry(errors={requests.exceptions.HTTPError}, error_codes={409})
     def test_dockstore_import_in_terra(self):
         # import the workflow into terra
         response = Utilities.import_dockstore_wf_into_terra(RAWLS_DOMAIN, BILLING_PROJECT)
@@ -92,7 +93,7 @@ class TestTerra(unittest.TestCase):
         with self.subTest('Dockstore Check Workflow Not Seen'):
             self.assertFalse(wf_seen_in_terra)
 
-    @unittest.skip('This test needs to be updated.')
+ 
     def test_drs_workflow_in_terra(self):
         """This test runs md5sum in a fixed workspace using a drs url from gen3."""
         response = Utilities.run_workflow(RAWLS_DOMAIN, BILLING_PROJECT, STAGE)
@@ -108,14 +109,13 @@ class TestTerra(unittest.TestCase):
         # also configurable manually via MD5SUM_TEST_TIMEOUT if held in a pending state
         start = time.time()
         deadline = start + int(os.environ.get('MD5SUM_TEST_TIMEOUT', 60 * 60))
-        ''' UNCOMMENT THIS TOO'''
-        # table = f'platform-dev-178517.bdc.terra_md5_latency_min_{STAGE}'
+
+        table = f'platform-dev-178517.bdc.terra_md5_latency_min_{STAGE}'
         while True:
             response = Utilities.check_workflow_status(rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT, submission_id=submission_id)
             status = response['status']
             if response['workflows'][0]['status'] == "Failed":
-                '''WHEN THIS GOES LIVE UNCOMMENT'''
-                # log_duration(table, time.time() - start)
+                log_duration(table, time.time() - start)
                 raise RuntimeError(f'The md5sum workflow did not succeed:\n{json.dumps(response, indent=4)}')
             elif status == 'Done':
                 break
@@ -126,17 +126,15 @@ class TestTerra(unittest.TestCase):
                           f"Checking again in 20 seconds.")
                     time.sleep(20)
                 else:
-                    print(json.dumps(response, indent=4))
-                    '''WHEN THIS GOES LIVE UNCOMMENT'''
-                    # log_duration(table, time.time() - start)
+                    log_duration(table, time.time() - start)
                     raise RuntimeError('The md5sum workflow run timed out.  '
                                        f'Expected 4 minutes, but took longer than '
                                        f'{float(now - start) / 60.0} minutes.')
-        '''WHEN THIS GOES LIVE UNCOMMENT'''
-        # log_duration(table, time.time() - start)
+        log_duration(table, time.time() - start)
         with self.subTest('Dockstore Workflow Run Completed Successfully'):
             if response['workflows'][0]['status'] != "Succeeded":
                 raise RuntimeError(f'The md5sum workflow did not succeed:\n{json.dumps(response, indent=4)}')
+
 
     def test_pfb_handoff_from_gen3_to_terra(self):
         time_stamp = datetime.datetime.now().strftime("%Y_%m_%d_%H%M%S")
@@ -176,15 +174,15 @@ class TestTerra(unittest.TestCase):
             response = Utilities.delete_terra_workspace(workspace=workspace_name, rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT)
             self.assertTrue(response.status_code == 404)
 
-    # @unittest.skip('There seems to be an environment issue with this test in staging.')
+
     def test_public_data_access(self):
-        # this DRS URI only exists on staging/alpha and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'alpha'
+        # this DRS URI only exists on staging and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'staging'
         drs.head('drs://dg.712C:fa640b0e-9779-452f-99a6-16d833d15bd0',
                  workspace_name='DRS-Test-Workspace', workspace_namespace=BILLING_PROJECT)
 
-    @unittest.skip('This test needs to be updated.')
+    # @unittest.skip('Working')
     def test_controlled_data_access(self):
-        # this DRS URI only exists on staging/alpha and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'alpha'
+        # this DRS URI only exists on staging/alpha and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'staging'
         drs.head('drs://dg.712C:04fbb96d-68c9-4922-801e-9b1350be3b94',
                  workspace_name='DRS-Test-Workspace', workspace_namespace=BILLING_PROJECT)
 
