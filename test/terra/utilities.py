@@ -50,7 +50,6 @@ class Utilities:
         }
 
         resp = requests.post(endpoint, headers=headers, data=json.dumps(data))
-        
         resp.raise_for_status()
         return resp.json()
 

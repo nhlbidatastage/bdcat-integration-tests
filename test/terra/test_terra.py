@@ -93,7 +93,6 @@ class TestTerra(unittest.TestCase):
         with self.subTest('Dockstore Check Workflow Not Seen'):
             self.assertFalse(wf_seen_in_terra)
 
- 
     def test_drs_workflow_in_terra(self):
         """This test runs md5sum in a fixed workspace using a drs url from gen3."""
         response = Utilities.run_workflow(RAWLS_DOMAIN, BILLING_PROJECT, STAGE)
@@ -135,7 +134,6 @@ class TestTerra(unittest.TestCase):
             if response['workflows'][0]['status'] != "Succeeded":
                 raise RuntimeError(f'The md5sum workflow did not succeed:\n{json.dumps(response, indent=4)}')
 
-
     def test_pfb_handoff_from_gen3_to_terra(self):
         time_stamp = datetime.datetime.now().strftime("%Y_%m_%d_%H%M%S")
         workspace_name = f'integration_test_pfb_gen3_to_terra_{time_stamp}_delete_me'
@@ -173,7 +171,6 @@ class TestTerra(unittest.TestCase):
                 logger.critical(f'Response {response.status_code} has changed: {response}')
             response = Utilities.delete_terra_workspace(workspace=workspace_name, rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT)
             self.assertTrue(response.status_code == 404)
-
 
     def test_public_data_access(self):
         # this DRS URI only exists on staging and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'staging'
