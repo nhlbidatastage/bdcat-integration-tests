@@ -47,11 +47,11 @@ class TestTerra(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''COMMENT FOR LOCAL TESTING'''
-        gcloud_cred_dir = os.path.expanduser('~/.config/gcloud')
-        if not os.path.exists(gcloud_cred_dir):
-            os.makedirs(gcloud_cred_dir, exist_ok=True)
-        with open(os.path.expanduser('~/.config/gcloud/application_default_credentials.json'), 'w') as f:
-            f.write(os.environ['TEST_MULE_CREDS'])
+        # gcloud_cred_dir = os.path.expanduser('~/.config/gcloud')
+        # if not os.path.exists(gcloud_cred_dir):
+        #     os.makedirs(gcloud_cred_dir, exist_ok=True)
+        # with open(os.path.expanduser('~/.config/gcloud/application_default_credentials.json'), 'w') as f:
+        #     f.write(os.environ['TEST_MULE_CREDS'])
         '''END COMMENT FOR LOCAL TESTING'''
         print(f'Terra [{STAGE}] Health Status:\n\n{json.dumps(Utilities.check_terra_health(ORC_DOMAIN), indent=4)}')
 
@@ -114,7 +114,7 @@ class TestTerra(unittest.TestCase):
             response = Utilities.check_workflow_status(rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT, submission_id=submission_id)
             status = response['status']
             if response['workflows'][0]['status'] == "Failed":
-                log_duration(table, time.time() - start)
+                log_duration(table, time.time() - start,True)
                 raise RuntimeError(f'The md5sum workflow did not succeed:\n{json.dumps(response, indent=4)}')
             elif status == 'Done':
                 break
