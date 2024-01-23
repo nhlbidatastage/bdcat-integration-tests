@@ -21,11 +21,12 @@ jobs:
       WORKSPACE_NAME: terra-notebook-utils-tests
       GOOGLE_PROJECT_ID: drs-billing-project
       BDCAT_STAGE: staging
-      TERRA_DEPLOYMENT_ENV: alpha
+      TERRA_DEPLOYMENT_ENV: staging
       TEST_MULE_CREDS: ${{ secrets.TEST_MULE_CREDS }}
       TERRA_WEBHOOK: ${{ secrets.TERRA_SLACK_WEBHOOK }}
       GEN3_API_KEY: ${{ secrets.GEN3_API_KEY }}
       BDCAT_SB_BROKER_TOKEN: ${{ secrets.BDCAT_SB_BROKER_TOKEN }}
+      ENCODED_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -41,19 +42,13 @@ jobs:
           source environment
           make lint
       - name: Decode credentials
-        run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 -d > gcp-creds.json
-      # - name: Run basic submission test
-      #   run: timeout -s SIGINT 115m ./venv/bin/python -m unittest
+        run: echo '${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}' > gcp-creds.json
       - name: Run basic submission test
         run: |
-          cd test
-          timeout -s SIGINT 115m ../venv/bin/python -m terra.test_terra
-#       - name: Post to Slack
-#         run: ./venv/bin/python scripts/post_to_slack.py
+          timeout -s SIGINT 115m ./venv/bin/python -m test.terra.test_terra
       
 
   staging__version_check:
-    if: github.ref != 'refs/heads/prod'
     environment: staging
     runs-on: ubuntu-latest
     env:
@@ -62,6 +57,7 @@ jobs:
       GOOGLE_PROJECT_ID: drs-billing-project
       BDCAT_STAGE: staging
       TERRA_DEPLOYMENT_ENV: alpha
+      ENCODED_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -77,9 +73,9 @@ jobs:
           source environment
           make lint
       - name: Decode credentials
-        run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 -d > gcp-creds.json
+        run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" > gcp-creds.json
       - name: Run version check test
-        run: ./venv/bin/python test/test_version_check.py
+        run: ./venv/bin/python -m test.gen3.test_version_check
 #       - name: Post to Slack
 #         run: ./venv/bin/python scripts/post_to_slack.py
       
@@ -110,7 +106,7 @@ jobs:
           source environment
           make lint
       - name: Decode credentials
-        run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 -d > gcp-creds.json
+        run: echo "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" > gcp-creds.json
       - name: Run basic submission test
         run: timeout -s SIGINT 115m ./venv/bin/python test/test_basic_submission.py
 #       - name: Post to Slack
