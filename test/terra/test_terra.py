@@ -200,17 +200,18 @@ if __name__ == '__main__':
     timestamp = datetime.datetime.now()
     client = Client()
     all_failures = results.result.errors.extend(results.result.failures)
-    for test, status in all_failures:
-        # Unfortunately this is the only way to get the test method name from the TestCase
-        test_name = test._testMethodName
-        del test_list[test_name]
-        try:
-            # To create tables, skip all tests and set create to True:
-            if STAGE == 'staging':
-                test_name = f'staging_{test_name}'
-            client.log_test_results(test_name, "failure", timestamp, create=True)
-        except Exception as e:
-            logger.exception('Failed to log test %r', test, exc_info=e)
+    if all_failures is not None:
+        for test, status in all_failures:
+            # Unfortunately this is the only way to get the test method name from the TestCase
+            test_name = test._testMethodName
+            del test_list[test_name]
+            try:
+                # To create tables, skip all tests and set create to True:
+                if STAGE == 'staging':
+                    test_name = f'staging_{test_name}'
+                client.log_test_results(test_name, "failure", timestamp, create=True)
+            except Exception as e:
+                logger.exception('Failed to log test %r', test, exc_info=e)
     for test_name in test_list.keys():
         try:
             # To create tables, skip all tests and set create to True:
