@@ -49,7 +49,6 @@ jobs:
       
 
   staging__version_check:
-    if: github.ref != 'refs/heads/prod'
     environment: staging
     runs-on: ubuntu-latest
     env:
@@ -58,6 +57,7 @@ jobs:
       GOOGLE_PROJECT_ID: drs-billing-project
       BDCAT_STAGE: staging
       TERRA_DEPLOYMENT_ENV: alpha
+      ENCODED_GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -73,9 +73,9 @@ jobs:
           source environment
           make lint
       - name: Decode credentials
-        run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 -d > gcp-creds.json
+        run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" > gcp-creds.json
       - name: Run version check test
-        run: ./venv/bin/python test/test_version_check.py
+        run: ./venv/bin/python -m test.gen3.test_version_check
 #       - name: Post to Slack
 #         run: ./venv/bin/python scripts/post_to_slack.py
       
