@@ -220,4 +220,4 @@ if __name__ == '__main__':
             client.log_test_results(test_name, "success", timestamp, create=True)
         except Exception as e:
             logger.exception('Failed to log test %r', test, exc_info=e)
-    sys.exit(not results.wasSuccessful())
+    sys.exit(not results.result.wasSuccessful())
