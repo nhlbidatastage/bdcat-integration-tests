@@ -180,14 +180,14 @@ class TestTerra(unittest.TestCase):
         # this DRS URI only exists on staging and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'staging'
         if STAGE == "staging":
             drs.head('drs://dg.712C:fa640b0e-9779-452f-99a6-16d833d15bd0',
-                    workspace_name='DRS-Test-Workspace', workspace_namespace=BILLING_PROJECT)
+                     workspace_name='DRS-Test-Workspace', workspace_namespace=BILLING_PROJECT)
 
     # @unittest.skip('Working')
     def test_controlled_data_access(self):
         # this DRS URI only exists on staging/alpha and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'staging'
         if STAGE == "staging":
             drs.head('drs://dg.712C:04fbb96d-68c9-4922-801e-9b1350be3b94',
-                    workspace_name='DRS-Test-Workspace', workspace_namespace=BILLING_PROJECT)
+                     workspace_name='DRS-Test-Workspace', workspace_namespace=BILLING_PROJECT)
 
 
 if __name__ == '__main__':
