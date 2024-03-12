@@ -62,7 +62,6 @@ class TestTerra(unittest.TestCase):
         except:  # noqa
             pass
 
-    # @unittest.skip('Working')
     def test_dockstore_import_in_terra(self):
         # import the workflow into terra
         response = Utilities.import_dockstore_wf_into_terra(RAWLS_DOMAIN, BILLING_PROJECT)
@@ -94,7 +93,6 @@ class TestTerra(unittest.TestCase):
         with self.subTest('Dockstore Check Workflow Not Seen'):
             self.assertFalse(wf_seen_in_terra)
 
-    # @unittest.skip('Working')
     def test_drs_workflow_in_terra(self):
         """This test runs md5sum in a fixed workspace using a drs url from gen3."""
         response = Utilities.run_workflow(RAWLS_DOMAIN, BILLING_PROJECT, STAGE)
@@ -136,7 +134,6 @@ class TestTerra(unittest.TestCase):
             if response['workflows'][0]['status'] != "Succeeded":
                 raise RuntimeError(f'The md5sum workflow did not succeed:\n{json.dumps(response, indent=4)}')
 
-    # @unittest.skip('Working')
     def test_pfb_handoff_from_gen3_to_terra(self):
         time_stamp = datetime.datetime.now().strftime("%Y_%m_%d_%H%M%S")
         workspace_name = f'integration_test_pfb_gen3_to_terra_{time_stamp}_delete_me'
@@ -175,14 +172,12 @@ class TestTerra(unittest.TestCase):
             response = Utilities.delete_terra_workspace(workspace=workspace_name, rawls_domain=RAWLS_DOMAIN, billing_project=BILLING_PROJECT)
             self.assertTrue(response.status_code == 404)
 
-    # @unittest.skip('Working')
     def test_public_data_access(self):
         # this DRS URI only exists on staging and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'staging'
         if STAGE == "staging":
             drs.head('drs://dg.712C:fa640b0e-9779-452f-99a6-16d833d15bd0',
                      workspace_name='DRS-Test-Workspace', workspace_namespace=BILLING_PROJECT)
 
-    # @unittest.skip('Working')
     def test_controlled_data_access(self):
         # this DRS URI only exists on staging/alpha and requires os.environ['TERRA_DEPLOYMENT_ENV'] = 'staging'
         if STAGE == "staging":
