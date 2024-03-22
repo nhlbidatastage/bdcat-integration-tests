@@ -80,6 +80,11 @@ class Utilities:
 
     def run_workflow(rawls_domain, billing_project, stage):
         workspace = 'DRS-Test-Workspace'
+        drs_tests = "drs_tests"
+        if stage == "prod":
+            drs_tests = "broad-integration-testing"
+            workspace = 'DRS-Test-Runner-Workspace'
+
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/submissions'
 
         token = gs.get_access_token()
@@ -90,7 +95,7 @@ class Utilities:
         # staging input: https://gen3.biodatacatalyst.nhlbi.nih.gov/files/dg.712C/fa640b0e-9779-452f-99a6-16d833d15bd0
         # md5sum: e87ecd9c771524dcc646c8baf6f8d3e2
         data = {
-            "methodConfigurationNamespace": "drs_tests",
+            "methodConfigurationNamespace": drs_tests,
             "methodConfigurationName": "md5sum",
             "expression": "this.data_access_test_drs_uriss",
             "useCallCache": False,
@@ -116,6 +121,8 @@ class Utilities:
 
     def check_workflow_status(rawls_domain, billing_project, submission_id):
         workspace = 'DRS-Test-Workspace'
+        if "prod" in rawls_domain:
+            workspace = 'DRS-Test-Runner-Workspace'
         endpoint = f'{rawls_domain}/api/workspaces/{billing_project}/{workspace}/submissions/{submission_id}'
 
         token = gs.get_access_token()
