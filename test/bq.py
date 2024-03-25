@@ -16,7 +16,8 @@ log = logging.getLogger(__name__)
 class Client:
 
     def __init__(self, project='unc-renci-bdc-itwg'):
-        credentials = Credentials.from_service_account_info(json.loads(os.environ['ENCODED_GOOGLE_APPLICATION_CREDENTIALS']))
+        # credentials = Credentials.from_service_account_info(json.loads(os.environ['ENCODED_GOOGLE_APPLICATION_CREDENTIALS']))
+        credentials = Credentials.from_service_account_file('gcp-creds.json')
         self.client = bigquery.Client(project=project, credentials=credentials)
 
     @retry(errors={ServiceUnavailable})
