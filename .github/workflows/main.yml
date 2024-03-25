@@ -13,7 +13,7 @@ on:
 
 jobs:
   staging__basic_submission:
-    if: github.ref != 'refs/heads/master'
+    if: github.ref != 'refs/heads/prod'
     runs-on: ubuntu-latest
     environment: staging
     env:
@@ -54,7 +54,7 @@ jobs:
       
 
   staging__version_check:
-    if: github.ref != 'refs/heads/master'
+    if: github.ref != 'refs/heads/prod'
     environment: staging
     runs-on: ubuntu-latest
     env:
