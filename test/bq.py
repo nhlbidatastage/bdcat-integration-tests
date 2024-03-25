@@ -1,5 +1,7 @@
 import datetime
 import logging
+import os
+import json
 
 from google.api_core.exceptions import ServiceUnavailable
 from google.cloud import bigquery
@@ -14,7 +16,7 @@ log = logging.getLogger(__name__)
 class Client:
 
     def __init__(self, project='unc-renci-bdc-itwg'):
-        credentials = Credentials.from_service_account_file('gcp-creds.json')
+        credentials = Credentials.from_service_account_info(json.loads(os.environ['ENCODED_GOOGLE_APPLICATION_CREDENTIALS']))
         self.client = bigquery.Client(project=project, credentials=credentials)
 
     @retry(errors={ServiceUnavailable})
@@ -61,7 +63,9 @@ class Client:
             self.add_row(table_id, row)
 
 
-def log_duration(table, duration):
+def log_duration(table, duration, create_table=False):
+    if create_table:
+        Client().create_test_table(table)
     try:
         # Track time in minutes
         Client().add_row(table, {'t': str(datetime.datetime.now()), 'd': duration / 60})
