@@ -46,8 +46,6 @@ jobs:
         run: |
           source environment
           make lint
-      - name: Decode credentials
-        run: echo '${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}' > test/terra/gcp-creds.json
       - name: Run basic submission test
         run: |
           timeout -s SIGINT 115m ./venv/bin/python -m test.terra.test_terra
@@ -78,8 +76,6 @@ jobs:
         run: |
           source environment
           make lint
-      - name: Decode credentials
-        run: echo -n "${{ secrets.ENCODED_GOOGLE_APPLICATION_CREDENTIALS }}" > gcp-creds.json
       - name: Run version check test
         run: ./venv/bin/python -m test.gen3.test_version_check
 #       - name: Post to Slack
