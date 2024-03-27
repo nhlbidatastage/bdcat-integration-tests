@@ -18,7 +18,7 @@ class Client:
     def __init__(self, project='unc-renci-bdc-itwg'):
         creds = os.getenv('ENCODED_GOOGLE_APPLICATION_CREDENTIALS')
         if creds is None:
-            raise RuntimeError(f'Missing encoded google application credentials')
+            raise RuntimeError('Missing encoded google application credentials')
         credentials = Credentials.from_service_account_info(json.loads(creds))
         self.client = bigquery.Client(project=project, credentials=credentials)
 
