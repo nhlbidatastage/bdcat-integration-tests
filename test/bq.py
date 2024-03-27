@@ -24,7 +24,7 @@ class Client:
         rows_to_insert = [row]
         errors = self.client.insert_rows_json(table_id, rows_to_insert)
         if errors:
-            raise RuntimeError(f'Encountered errors while inserting rows: {errors}')
+            raise RuntimeError(f'Encountered errors while inserting rows:  {errors}')
 
     def list_table(self, table_id, limit=10):
         q = self.client.query(f'SELECT * FROM `{table_id}` LIMIT {limit}')
